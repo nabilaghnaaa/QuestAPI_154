@@ -1,16 +1,17 @@
 package com.example.localrestapi.repositori
 
-import com.example.localrestapi.apiservice.ServiceApiSiswa
 import com.example.localrestapi.modeldata.DataSiswa
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Query
 
-interface RepositoryDataSiswa{
-    suspend fun getDataSiswa(): List<DataSiswa>
-    suspend fun postDataSiswa(dataSiswa: DataSiswa) :retrofit2.Response<Void>
-}
+interface ServiceApiSiswa{
+    @GET("bacaTeman.php")
+    suspend fun getSiswa(): List<DataSiswa>
 
-class JaringanRepositoryDataSiswa(
-    private val serviceApiSiswa: ServiceApiSiswa
-) : RepositoryDataSiswa{
-    override suspend fun getDataSiswa() : List<DataSiswa> = serviceApiSiswa.getSiswa()
-    override suspend fun postDataSiswa(dataSiswa: DataSiswa) :retrofit2.Response<Void> = serviceApiSiswa.postSiswa(dataSiswa)
+    @POST("insertTM.php")
+    suspend fun  postSiswa(@Body dataSiswa: DataSiswa):retrofit2.Response<Void>
 }
