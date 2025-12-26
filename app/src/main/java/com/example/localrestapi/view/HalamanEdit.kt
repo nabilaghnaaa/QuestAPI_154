@@ -12,3 +12,38 @@ import com.example.localrestapi.uicontroller.route.DestinasiEdit
 import com.example.localrestapi.viewmodel.EditViewModel
 import com.example.localrestapi.viewmodel.provider.PenyediaViewModel
 import kotlinx.coroutines.launch
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun EditSiswaScreen(
+    navigateBack: () -> Unit,
+    onNavigateUp: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: EditViewModel = viewModel(factory = PenyediaViewModel.Factory)
+) {
+    Scaffold(
+        topBar = {
+            SiswaTopAppBar(
+                title = stringResource(DestinasiEdit.titleRes),
+                canNavigateBack = true,
+                navigateUp = onNavigateUp
+            )
+        },
+        modifier = modifier
+    ) { innerPadding ->
+
+        val coroutineScope = rememberCoroutineScope()
+
+        EntrySiswaBody(
+            uiStateSiswa = viewModel.uiStateSiswa,
+            onSiswaValueChange = viewModel::updateUiState,
+            onSaveClick = {
+                coroutineScope.launch {
+                    viewModel.editSatuSiswa()
+                    navigateBack()
+                }
+            },
+            modifier = Modifier.padding(innerPadding)
+        )
+    }
+}
