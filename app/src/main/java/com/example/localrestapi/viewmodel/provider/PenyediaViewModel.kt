@@ -10,3 +10,25 @@ import com.example.localrestapi.viewmodel.DetailViewModel
 import com.example.localrestapi.viewmodel.EditViewModel
 import com.example.localrestapi.viewmodel.EntryViewModel
 import com.example.localrestapi.viewmodel.HomeViewModel
+
+fun CreationExtras.aplikasiDataSiswa(): AplikasiDataSiswa = (
+        this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as AplikasiDataSiswa
+        )
+object PenyediaViewModel {
+    val Factory = viewModelFactory {
+        initializer { HomeViewModel(aplikasiDataSiswa().containerApp.repositoryDataSiswa) }
+        initializer { EntryViewModel(aplikasiDataSiswa().containerApp.repositoryDataSiswa) }
+        initializer {
+            DetailViewModel(
+                this.createSavedStateHandle(),
+                aplikasiDataSiswa().containerApp.repositoryDataSiswa
+            )
+        }
+        initializer {
+            EditViewModel(
+                this.createSavedStateHandle(),
+                aplikasiDataSiswa().containerApp.repositoryDataSiswa
+            )
+        }
+    }
+}
