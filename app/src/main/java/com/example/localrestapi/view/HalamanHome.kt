@@ -41,3 +41,50 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HomeScreen(
+    // edit 1.1 : tambahkan parameter navigateToItemEntry
+    navigateToItemEntry: () -> Unit,
+    // edit 2.4 : tambahkan parameter navigateToItemUpdate
+    navigateToItemUpdate: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    homeViewModel: HomeViewModel = viewModel(factory = PenyediaViewModel.Factory)
+) {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
+    Scaffold(
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            SiswaTopAppBar(
+                title = stringResource(DestinasiHome.titleRes),
+                canNavigateBack = false,
+                scrollBehavior = scrollBehavior
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                // edit 1.2 : event onClick
+                onClick = navigateToItemEntry,
+                shape = MaterialTheme.shapes.medium,
+                modifier = Modifier
+                    .padding(dimensionResource(id = R.dimen.padding_large))
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.entry_siswa)
+                )
+            }
+        }
+    ) { innerPadding ->
+        HomeBody(
+            statusUiSiswa = homeViewModel.listSiswa,
+            onSiswaClick = navigateToItemUpdate,
+            retryAction = homeViewModel::loadSiswa,
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+        )
+    }
+}
