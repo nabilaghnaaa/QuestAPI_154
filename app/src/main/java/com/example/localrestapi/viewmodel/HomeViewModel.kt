@@ -30,9 +30,9 @@ class HomeViewModel (private val repositoryDataSiswa: RepositoryDataSiswa) : Vie
             listSiswa = StatusUiSiswa.Loading
             listSiswa = try {
                 StatusUiSiswa.Success(repositoryDataSiswa.getDataSiswa())
-            }catch (e: IOException) {
+            } catch (_: IOException) { // Menggunakan underscore untuk menghilangkan warning
                 StatusUiSiswa.Error
-            } catch (e: HttpException){
+            } catch (_: HttpException) { // Menggunakan underscore untuk menghilangkan warning
                 StatusUiSiswa.Error
             }
         }
