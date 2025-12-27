@@ -11,7 +11,6 @@ import com.example.localrestapi.modeldata.DataSiswa
 import com.example.localrestapi.repositori.RepositoryDataSiswa
 import com.example.localrestapi.uicontroller.route.DestinasiDetail
 import kotlinx.coroutines.launch
-import kotlinx.serialization.InternalSerializationApi
 import java.io.IOException
 import retrofit2.HttpException
 import retrofit2.Response
@@ -21,8 +20,14 @@ sealed interface StatusUIDetail {
     object Error : StatusUIDetail
     object Loading : StatusUIDetail
 }
-class DetailViewModel (savedStateHandle: SavedStateHandle, private val repositoryDataSiswa: RepositoryDataSiswa): ViewModel(){
+
+class DetailViewModel(
+    savedStateHandle: SavedStateHandle,
+    private val repositoryDataSiswa: RepositoryDataSiswa
+) : ViewModel() {
+
     private val idSiswa: Int = checkNotNull(savedStateHandle[DestinasiDetail.ITEM_ID_ARG])
+
     var statusUIDetail: StatusUIDetail by mutableStateOf(StatusUIDetail.Loading)
         private set
 
@@ -30,28 +35,26 @@ class DetailViewModel (savedStateHandle: SavedStateHandle, private val repositor
         getSatuSiswa()
     }
 
-    fun getSatuSiswa(){
+    fun getSatuSiswa() {
         viewModelScope.launch {
             statusUIDetail = StatusUIDetail.Loading
             statusUIDetail = try {
                 StatusUIDetail.Success(satusiswa = repositoryDataSiswa.getSatuSiswa(idSiswa))
-            }
-            catch (e: IOException){
+            } catch (_: IOException) { // Menggunakan underscore untuk parameter yang tidak digunakan
                 StatusUIDetail.Error
-            }
-            catch (e: HttpException){
+            } catch (_: HttpException) {
                 StatusUIDetail.Error
             }
         }
     }
 
     @SuppressLint("SuspiciousIndentation")
-    suspend fun hapusSatuSiswa(){
+    suspend fun hapusSatuSiswa() {
         val resp: Response<Void> = repositoryDataSiswa.hapusSatuSiswa(idSiswa)
 
-        if(resp.isSuccessful){
+        if (resp.isSuccessful) {
             println("Sukses Hapus Data : ${resp.message()}")
-        }else{
+        } else {
             println("Gagal Hapus Data : ${resp.errorBody()}")
         }
     }
