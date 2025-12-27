@@ -9,31 +9,32 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 
-
-interface ContainerApp{
+interface ContainerApp {
     val repositoryDataSiswa: RepositoryDataSiswa
 }
 
-class DefaultContainerApp : ContainerApp{
+class DefaultContainerApp : ContainerApp {
     private val baseurl = "http://10.0.2.2/tiumy/"
 
-    val logging = HttpLoggingInterceptor().apply {
-        level= HttpLoggingInterceptor.Level.BODY
-
+    // Perbaikan Warning: Membuat instance Json secara singleton di dalam kelas
+    private val jsonInstance = Json {
+        ignoreUnknownKeys = true
+        prettyPrint = true
+        isLenient = true
     }
 
-    val klien = OkHttpClient.Builder()
+    private val logging = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
+
+    private val klien = OkHttpClient.Builder()
         .addInterceptor(logging)
         .build()
 
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(baseurl)
         .addConverterFactory(
-            Json {
-                ignoreUnknownKeys = true
-                prettyPrint = true
-                isLenient = true
-            }.asConverterFactory("application/json".toMediaType())
+            jsonInstance.asConverterFactory("application/json".toMediaType())
         )
         .client(klien)
         .build()
@@ -43,11 +44,13 @@ class DefaultContainerApp : ContainerApp{
     }
 
     override val repositoryDataSiswa: RepositoryDataSiswa by lazy {
-        JaringanRepositoryDataSiswa(retrofitService) }
+        JaringanRepositoryDataSiswa(retrofitService)
+    }
 }
 
 class AplikasiDataSiswa : Application() {
     lateinit var containerApp: ContainerApp
+
     override fun onCreate() {
         super.onCreate()
         containerApp = DefaultContainerApp()
