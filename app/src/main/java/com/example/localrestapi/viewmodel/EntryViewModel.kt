@@ -26,4 +26,16 @@ class EntryViewModel(private val repositoryDataSiswa: RepositoryDataSiswa) :
         uiStateSiswa =
             UIStateSiswa(detailSiswa = detailSiswa, isEntryValid = validasiInput(detailSiswa))
     }
+
+    suspend fun addSiswa() {
+        if (validasiInput()) {
+            val sip: Response<Void> = repositoryDataSiswa
+                .postDataSiswa(uiStateSiswa.detailSiswa.toDataSiswa())
+            if (sip.isSuccessful){
+                println("Sukses tambah data : ${sip.message()}")
+            }else {
+                println("Gagal tambah data : ${sip.errorBody()}")
+            }
+        }
+    }
 }
