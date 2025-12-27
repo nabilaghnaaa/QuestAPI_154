@@ -140,7 +140,7 @@ fun FormTambahSiswa(
         }
     }
 
-    Divider(
+    HorizontalDivider(
         thickness = dimensionResource(R.dimen.padding_small),
         modifier = Modifier.padding(bottom = dimensionResource(R.dimen.padding_medium))
     )
