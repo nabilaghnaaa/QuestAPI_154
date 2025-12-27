@@ -44,7 +44,7 @@ fun HostNavigasi(
         }
 
         composable(
-            DestinasiDetail.routeWithArgs, arguments = listOf(navArgument(DestinasiDetail.itemIdArg) {
+            DestinasiDetail.routeWithArgs, arguments = listOf(navArgument(DestinasiDetail.ITEM_ID_ARG) {
                 type = NavType.IntType
             })
         ) {
@@ -53,7 +53,7 @@ fun HostNavigasi(
                 navigateBack = { navController.navigate(DestinasiHome.route) })
         }
 
-        composable(DestinasiEdit.routeWithArgs, arguments = listOf(navArgument(DestinasiEdit.itemIdArg){
+        composable(DestinasiEdit.routeWithArgs, arguments = listOf(navArgument(DestinasiEdit.ITEM_ID_ARG){
             type= NavType.IntType
         })){
             EditSiswaScreen(navigateBack = { navController.navigate(DestinasiHome.route)},
