@@ -15,3 +15,9 @@ import kotlinx.serialization.InternalSerializationApi
 import java.io.IOException
 import retrofit2.HttpException
 import retrofit2.Response
+
+sealed interface StatusUIDetail {
+    data class Success(val satusiswa: DataSiswa) : StatusUIDetail
+    object Error : StatusUIDetail
+    object Loading : StatusUIDetail
+}
