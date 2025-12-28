@@ -1,0 +1,7 @@
+![Halaman Home](HOME.png)
+![Halaman Detail Siswa](detailsiswa.png)
+![Hasil setelah edit](homesetelahdiedit.png)
+![Hasil_setelah_dihapus](homesetelahhapus.png)
+![Detail setelah_menambah](homesetelahmenambah.png)
+![popuphapus](popuphapus.png)
+![HalamanTambahSiswa](TAMBAHSISWA.png)
