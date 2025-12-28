@@ -182,8 +182,8 @@ fun DetailDataSiswa(
             )
 
             BarisDetailData(
-                labelResID = R.string.telpon1,
-                itemDetail = siswa.telpon,
+                labelResID = R.string.telepon1,
+                itemDetail = siswa.telepon,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen

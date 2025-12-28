@@ -22,8 +22,8 @@ class EntryViewModel(
     ): Boolean {
         return uiState.nama.isNotBlank()
                 && uiState.alamat.isNotBlank()
-                && uiState.telpon.isNotBlank()
-                && uiState.telpon.all { it.isDigit() } // 🔴 PENTING
+                && uiState.telepon.isNotBlank()
+                && uiState.telepon.all { it.isDigit() } // 🔴 PENTING
     }
 
     fun updateUiState(detailSiswa: DetailSiswa) {

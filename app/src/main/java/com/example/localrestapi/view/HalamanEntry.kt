@@ -130,10 +130,10 @@ fun FormTambahSiswa(
         )
 
         OutlinedTextField(
-            value = detailSiswa.telpon,
-            onValueChange = { onValueChange(detailSiswa.copy(telpon = it)) },
+            value = detailSiswa.telepon,
+            onValueChange = { onValueChange(detailSiswa.copy(telepon = it)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            label = { Text(stringResource(R.string.telpon)) },
+            label = { Text(stringResource(R.string.telepon)) },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
