@@ -17,7 +17,10 @@ sealed interface StatusUiSiswa {
     object Loading : StatusUiSiswa
 }
 
-class HomeViewModel (private val repositoryDataSiswa: RepositoryDataSiswa) : ViewModel() {
+class HomeViewModel(
+    private val repositoryDataSiswa: RepositoryDataSiswa
+) : ViewModel() {
+
     var listSiswa: StatusUiSiswa by mutableStateOf(StatusUiSiswa.Loading)
         private set
 
@@ -30,9 +33,9 @@ class HomeViewModel (private val repositoryDataSiswa: RepositoryDataSiswa) : Vie
             listSiswa = StatusUiSiswa.Loading
             listSiswa = try {
                 StatusUiSiswa.Success(repositoryDataSiswa.getDataSiswa())
-            } catch (_: IOException) { // Menggunakan underscore untuk menghilangkan warning
+            } catch (e: IOException) {
                 StatusUiSiswa.Error
-            } catch (_: HttpException) { // Menggunakan underscore untuk menghilangkan warning
+            } catch (e: HttpException) {
                 StatusUiSiswa.Error
             }
         }

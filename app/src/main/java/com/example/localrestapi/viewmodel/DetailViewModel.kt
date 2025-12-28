@@ -1,3 +1,4 @@
+@file:OptIn(InternalSerializationApi::class)
 package com.example.localrestapi.viewmodel
 
 import android.annotation.SuppressLint
@@ -11,6 +12,7 @@ import com.example.localrestapi.modeldata.DataSiswa
 import com.example.localrestapi.repositori.RepositoryDataSiswa
 import com.example.localrestapi.uicontroller.route.DestinasiDetail
 import kotlinx.coroutines.launch
+import kotlinx.serialization.InternalSerializationApi
 import java.io.IOException
 import retrofit2.HttpException
 import retrofit2.Response
@@ -20,14 +22,8 @@ sealed interface StatusUIDetail {
     object Error : StatusUIDetail
     object Loading : StatusUIDetail
 }
-
-class DetailViewModel(
-    savedStateHandle: SavedStateHandle,
-    private val repositoryDataSiswa: RepositoryDataSiswa
-) : ViewModel() {
-
-    private val idSiswa: Int = checkNotNull(savedStateHandle[DestinasiDetail.ITEM_ID_ARG])
-
+class DetailViewModel (savedStateHandle: SavedStateHandle, private val repositoryDataSiswa: RepositoryDataSiswa): ViewModel(){
+    private val idSiswa: Int = checkNotNull(savedStateHandle[DestinasiDetail.itemIdArg])
     var statusUIDetail: StatusUIDetail by mutableStateOf(StatusUIDetail.Loading)
         private set
 
@@ -35,26 +31,28 @@ class DetailViewModel(
         getSatuSiswa()
     }
 
-    fun getSatuSiswa() {
+    fun getSatuSiswa(){
         viewModelScope.launch {
             statusUIDetail = StatusUIDetail.Loading
             statusUIDetail = try {
                 StatusUIDetail.Success(satusiswa = repositoryDataSiswa.getSatuSiswa(idSiswa))
-            } catch (_: IOException) { // Menggunakan underscore untuk parameter yang tidak digunakan
+            }
+            catch (e: IOException){
                 StatusUIDetail.Error
-            } catch (_: HttpException) {
+            }
+            catch (e: HttpException){
                 StatusUIDetail.Error
             }
         }
     }
 
     @SuppressLint("SuspiciousIndentation")
-    suspend fun hapusSatuSiswa() {
+    suspend fun hapusSatuSiswa(){
         val resp: Response<Void> = repositoryDataSiswa.hapusSatuSiswa(idSiswa)
 
-        if (resp.isSuccessful) {
+        if(resp.isSuccessful){
             println("Sukses Hapus Data : ${resp.message()}")
-        } else {
+        }else{
             println("Gagal Hapus Data : ${resp.errorBody()}")
         }
     }
